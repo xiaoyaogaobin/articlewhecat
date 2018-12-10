@@ -1,0 +1,10 @@
+
+  <view class="user">
+    <view class="icon">
+      <image mode="aspectFill" src="../images/user.jpg"/>
+      <view>我是超人</view>
+    </view>
+  </view>
+  <view>
+    <button type="primary" size="default" plain="true"> 退出 </button>
+  </view>

@@ -1,0 +1,93 @@
+<style lang="less">
+
+</style>
+<template>
+  <view>
+    <!--swiper 结构是复制小程序:https://developers.weixin.qq.com/miniprogram/dev/component/swiper.html-->
+    <swiper indicator-dots="true"
+            autoplay="true" interval="3000" duration="500">
+      <!--repeat 是 wepy 组件循环渲染:https://tencent.github.io/wepy/document.html#/?id=%E7%BB%84%E4%BB%B6%E7%9A%84%E5%BE%AA%E7%8E%AF%E6%B8%B2%E6%9F%93-->
+      <repeat for="{{imgUrls}}" key="index" index="index" item="item">
+        <swiper-item>
+          <image src="{{item.path}}" class="slide-image" width="355" height="150"/>
+        </swiper-item>
+      </repeat>
+    </swiper>
+  </view>
+  <!--文章列表-->
+  <!--wepy-weui-demo-->
+  <!--https://github.com/wepyjs/wepy-weui-demo-->
+  <view>
+    <view class="weui-panel">
+      <view class="weui-panel__hd">文章列表</view>
+      <repeat for="{{articles}}" key="index" index="index" item="item">
+        <view class="weui-panel__bd">
+          <navigator url="/pages/article?id={{item.id}}" hover-class="none">
+            <view class="weui-media-box weui-media-box_text">
+
+              <view class="weui-media-box__title weui-media-box__title_in-text">
+                {{item.title}}
+              </view>
+
+              <view class="weui-media-box__info">
+                <view class="weui-media-box__info__meta">{{item.user.data.name}}</view>
+                <view class="weui-media-box__info__meta">{{item.created_at}}</view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
+                  {{item.category.data.title}}
+                </view>
+              </view>
+            </view>
+          </navigator>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import slide from '@/services/slide'
+  import article from '@/services/article'
+
+  export default class Index extends wepy.page {
+    data = {
+      imgUrls: [],
+      articles: []
+    }
+
+    // 获取轮播图数据
+    async getSlideList() {
+      let response = await slide.get()
+      // console.log(response)
+      if (response.statusCode === 200) {
+        // 将数据赋值给 imgUrls
+        this.imgUrls = response.data.flashes
+        this.$apply()
+      }
+    }
+
+    // 获取文章列表
+    async getArticleList() {
+      let response = await article.get()
+      // console.log(response)
+      if (response.statusCode === 200) {
+        // console.log(response)
+        this.articles = response.data.data
+        this.$apply()
+      }
+    }
+
+    onLoad = () => {
+      this.getSlideList()
+      this.getArticleList()
+      // 以下代码是测试使用
+      // util.api({url: 'categories'})
+      // util.api({url: 'articles'})
+      // util.login({data: {email: 'wubin.mail@foxmail.com', password: 'admin888'}})
+      // util.logout()
+      // slide.get(2)
+      // article.get()
+      // article.show(2)
+    }
+  }
+</script>

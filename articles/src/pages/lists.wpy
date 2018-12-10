@@ -1,0 +1,14 @@
+<style lang="less">
+
+</style>
+<template>
+<navigator url="/pages/article">点击</navigator>
+
+</template>
+<script>
+  import wepy from 'wepy'
+  export default class Lists extends wepy.page {
+
+  }
+
+</script>

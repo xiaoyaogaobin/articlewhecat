@@ -1,0 +1,7 @@
+.user .icon {
+  text-align: center;
+}
+.user .icon image {
+  width: 100px;
+  height: 100px;
+}
